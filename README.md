@@ -12,26 +12,23 @@ Add a "Track Time" button to your Notion pages that opens Harvest's time trackin
 
 ## Quick Setup
 
-### 1. Host These Files
-
-Upload the files to any web server (GitHub Pages, Netlify, Vercel, etc.) with HTTPS.
-
-### 2. Add to Notion
+### 1. Add to Notion
 
 **Option A: Simple Button (Recommended - Best Compatibility)**
 1. In your Notion page, type `/embed` or click the `+` button
 2. Select "Embed" from the menu
-3. Enter your hosted `button-simple.html` URL
+3. Enter this URL: `https://harvest-helper.github.io/Notion-Integration/button-simple.html`
 4. A "Track Time" button will appear - click it to open the Harvest widget in a new window!
 5. **Best for**: Maximum compatibility on both web and desktop
 
 **Option B: Button with Modal**
-1. Same as above, but use `button.html` instead
+1. Same as above, but use this URL: `https://harvest-helper.github.io/Notion-Integration/button.html`
 2. Opens Harvest widget in a modal overlay
 3. **Note**: May have issues on Notion desktop app (see [COMPATIBILITY.md](COMPATIBILITY.md))
 
 **Option C: Full Widget Embed (Original)**
-1. Use `index.html` to embed the full Harvest widget directly in the page
+1. Use this URL: `https://harvest-helper.github.io/Notion-Integration/index.html`
+2. Embeds the full Harvest widget directly in the page
 
 ## How It Works
 
@@ -47,7 +44,7 @@ When you click the "Track Time" button:
 You can customize the button with URL parameters:
 
 ```
-https://your-domain.com/button.html?
+https://harvest-helper.github.io/Notion-Integration/button-simple.html?
   page_url=https://notion.so/your-page
   &page_title=Page Title
   &page_id=page-id

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest Timer Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: transparent;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+        }
+        
+        .track-time-button {
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+        }
+        
+        .track-time-button:hover {
+            background: #e55a00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .track-time-button:active {
+            background: #cc5200;
+            transform: translateY(0);
+        }
+        
+        .button-icon {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#" class="track-time-button" id="harvestButton" target="_blank" rel="noopener noreferrer">
+        <span class="button-icon">⏱</span>
+        <span>Track Time</span>
+    </a>
+
+    <script>
+        // Get Notion page context from URL parameters
+        function getNotionContext() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Try multiple methods to get page URL
+            let pageUrl = urlParams.get('page_url') || 
+                         urlParams.get('permalink');
+            
+            // Fallback: try to get from referrer or parent
+            if (!pageUrl) {
+                if (window.parent !== window && document.referrer) {
+                    pageUrl = document.referrer;
+                } else {
+                    pageUrl = window.location.href;
+                }
+            }
+            
+            return {
+                url: pageUrl,
+                title: urlParams.get('page_title') || 
+                       urlParams.get('item_name') || 
+                       document.title || 
+                       'Notion Page',
+                id: urlParams.get('page_id') || 
+                    urlParams.get('item_id') || 
+                    ''
+            };
+        }
+        
+        // Build Harvest widget URL
+        function buildHarvestUrl() {
+            const context = getNotionContext();
+            
+            return 'https://platform.harvestapp.com/platform/timer?' +
+                'app_name=' + encodeURIComponent('Notion') +
+                '&closable=false' +
+                '&permalink=' + encodeURIComponent(context.url) +
+                '&external_item_name=' + encodeURIComponent(context.title) +
+                '&external_item_id=' + encodeURIComponent(context.id);
+        }
+        
+        // Set button href and handle click
+        const button = document.getElementById('harvestButton');
+        button.href = buildHarvestUrl();
+        
+        // Also handle click programmatically for better Electron compatibility
+        button.addEventListener('click', function(e) {
+            // Let default behavior handle it (opens in new window)
+            // This ensures it works in both web and Electron
+        });
+    </script>
+</body>
+</html>
+

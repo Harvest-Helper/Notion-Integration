@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest Timer Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: transparent;
+            padding: 8px;
+        }
+        
+        .harvest-button-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .track-time-button {
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .track-time-button:hover {
+            background: #e55a00;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+        
+        .track-time-button:active {
+            background: #cc5200;
+            transform: translateY(0);
+        }
+        
+        .button-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        /* Modal overlay styles */
+        .harvest-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .harvest-modal-overlay.active {
+            display: flex;
+        }
+        
+        .harvest-modal {
+            background: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .harvest-modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e4e6ea;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8f9fa;
+        }
+        
+        .harvest-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #172b4d;
+            margin: 0;
+        }
+        
+        .harvest-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #8c8c8c;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .harvest-modal-close:hover {
+            background: #e4e6ea;
+            color: #172b4d;
+        }
+        
+        .harvest-modal-iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="harvest-button-container">
+        <button class="track-time-button" id="harvestButton">
+            <span class="button-icon">⏱</span>
+            <span>Track Time</span>
+        </button>
+    </div>
+    
+    <!-- Modal overlay for Harvest widget -->
+    <div class="harvest-modal-overlay" id="harvestModal">
+        <div class="harvest-modal">
+            <div class="harvest-modal-header">
+                <h3 class="harvest-modal-title">Track Time with Harvest</h3>
+                <button class="harvest-modal-close" id="closeModal">&times;</button>
+            </div>
+            <iframe id="harvestWidget" class="harvest-modal-iframe" src="about:blank"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Get Notion page context from URL parameters or try to detect from parent
+        function getNotionContext() {
+            // Try to get from URL parameters first
+            const urlParams = new URLSearchParams(window.location.search);
+            const pageUrl = urlParams.get('page_url') || 
+                           urlParams.get('permalink') || 
+                           (window.parent !== window ? document.referrer : window.location.href);
+            
+            const pageTitle = urlParams.get('page_title') || 
+                            urlParams.get('item_name') || 
+                            document.title || 
+                            'Notion Page';
+            
+            const pageId = urlParams.get('page_id') || 
+                          urlParams.get('item_id') || 
+                          '';
+            
+            return {
+                url: pageUrl,
+                title: pageTitle,
+                id: pageId
+            };
+        }
+        
+        // Build Harvest widget URL
+        function buildHarvestUrl() {
+            const context = getNotionContext();
+            
+            return 'https://platform.harvestapp.com/platform/timer?' +
+                'app_name=' + encodeURIComponent('Notion') +
+                '&closable=false' +
+                '&permalink=' + encodeURIComponent(context.url) +
+                '&external_item_name=' + encodeURIComponent(context.title) +
+                '&external_item_id=' + encodeURIComponent(context.id);
+        }
+        
+        // Open Harvest widget in modal
+        function openHarvestWidget() {
+            const modal = document.getElementById('harvestModal');
+            const iframe = document.getElementById('harvestWidget');
+            
+            iframe.src = buildHarvestUrl();
+            modal.classList.add('active');
+            
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal
+        function closeHarvestWidget() {
+            const modal = document.getElementById('harvestModal');
+            const iframe = document.getElementById('harvestWidget');
+            
+            modal.classList.remove('active');
+            iframe.src = 'about:blank';
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+        }
+        
+        // Event listeners
+        document.getElementById('harvestButton').addEventListener('click', openHarvestWidget);
+        document.getElementById('closeModal').addEventListener('click', closeHarvestWidget);
+        
+        // Close on overlay click
+        document.getElementById('harvestModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeHarvestWidget();
+            }
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeHarvestWidget();
+            }
+        });
+        
+        // Listen for messages from Harvest widget (if it sends close events)
+        window.addEventListener('message', function(e) {
+            // Harvest might send messages when timer is closed
+            if (e.data && typeof e.data === 'string' && e.data.includes('close')) {
+                closeHarvestWidget();
+            }
+        });
+    </script>
+</body>
+</html>
+

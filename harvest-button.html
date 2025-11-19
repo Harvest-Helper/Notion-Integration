@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest Timer Button</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: transparent;
+            padding: 8px;
+            min-height: 50px;
+        }
+        
+        /* Ensure Harvest button displays properly */
+        .harvest-timer {
+            display: inline-block;
+        }
+    </style>
+    
+    <!-- Harvest Platform Configuration -->
+    <script>
+        // Get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        var pageId = getUrlParameter('page_id') || '';
+        var pageTitle = getUrlParameter('page_title') || 'Notion Page';
+        var pageUrl = getUrlParameter('page_url') || window.location.href;
+        
+        // Configure Harvest Platform
+        window._harvestPlatformConfig = {
+            "applicationName": "Notion",
+            "permalink": pageUrl,
+            "skipStyling": false  // Use Harvest's default styling
+        };
+    </script>
+    
+    <!-- Harvest Platform Script -->
+    <script async src="https://platform.harvestapp.com/assets/platform.js"></script>
+</head>
+<body>
+    <!-- Harvest Timer Button Placeholder -->
+    <!-- The platform.js script will convert this into an interactive button -->
+    <div class="harvest-timer" id="harvest-timer-placeholder">
+    </div>
+    
+    <script>
+        // Update data attributes with actual values from URL params
+        // This runs after DOM is ready to ensure the div exists
+        document.addEventListener('DOMContentLoaded', function() {
+            var pageId = getUrlParameter('page_id') || '';
+            var pageTitle = getUrlParameter('page_title') || 'Notion Page';
+            var pageUrl = getUrlParameter('page_url') || window.location.href;
+            
+            var timerDiv = document.getElementById('harvest-timer-placeholder');
+            if (timerDiv) {
+                // Set data attributes for Harvest platform.js
+                timerDiv.setAttribute('data-item', JSON.stringify({
+                    id: pageId,
+                    name: pageTitle
+                }));
+                timerDiv.setAttribute('data-permalink', pageUrl);
+            }
+        });
+        
+        // Listen for Harvest button ready event
+        document.body.addEventListener('harvest-event:ready', function() {
+            console.log('Harvest timer button is ready');
+        });
+    </script>
+</body>
+</html>
+

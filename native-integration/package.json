@@ -1,0 +1,26 @@
+{
+  "name": "harvest-notion-native-integration",
+  "version": "1.0.0",
+  "description": "Native Notion integration that adds Harvest timer buttons to pages",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "notion",
+    "harvest",
+    "time-tracking",
+    "integration"
+  ],
+  "author": "Harvest Helper",
+  "license": "MIT",
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5"
+  }
+}
+

@@ -56,12 +56,22 @@ If parameters aren't provided, it will try to detect them from the page context.
 
 ```
 harvest-notion/
-├── button.html         # Button with modal popup
-├── button-simple.html  # Simple button (opens in new window) - RECOMMENDED
-├── index.html          # Full widget embed (original)
-├── README.md           # This file
-└── COMPATIBILITY.md    # Web vs Desktop compatibility guide
+├── button.html              # Button with modal popup
+├── button-simple.html       # Simple button (opens in new window) - RECOMMENDED
+├── index.html               # Full widget embed (original)
+├── README.md                # This file
+├── COMPATIBILITY.md         # Web vs Desktop compatibility guide
+├── INTEGRATION_GUIDE.md     # Comprehensive integration development guide
+└── NATIVE_INTEGRATION_GUIDE.md  # How to build native integration (browser extension)
 ```
+
+## Want a Native Button Like Harvest?
+
+The "Start timer" button you see in Notion is actually a **browser extension**, not a native Notion integration. See [NATIVE_INTEGRATION_GUIDE.md](NATIVE_INTEGRATION_GUIDE.md) for:
+- How Harvest's integration actually works
+- How to build a browser extension (like Harvest)
+- How to build a Notion API integration
+- Comparison of all approaches
 
 ## Comparison with Trello Power-Up
 

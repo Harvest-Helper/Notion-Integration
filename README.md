@@ -58,20 +58,45 @@ If parameters aren't provided, it will try to detect them from the page context.
 harvest-notion/
 ├── button.html              # Button with modal popup
 ├── button-simple.html       # Simple button (opens in new window) - RECOMMENDED
+├── harvest-button.html      # Native Harvest button using platform.js (NEW!)
 ├── index.html               # Full widget embed (original)
 ├── README.md                # This file
 ├── COMPATIBILITY.md         # Web vs Desktop compatibility guide
 ├── INTEGRATION_GUIDE.md     # Comprehensive integration development guide
-└── NATIVE_INTEGRATION_GUIDE.md  # How to build native integration (browser extension)
+├── NATIVE_INTEGRATION_GUIDE.md  # How to build native integration
+└── native-integration/      # Backend service for Notion API integration
+    ├── server.js            # Express server with OAuth & webhooks
+    ├── notion-service.js    # Notion API interactions
+    ├── harvest-service.js  # Harvest API integration
+    └── README.md            # Integration setup guide
 ```
 
-## Want a Native Button Like Harvest?
+## Native Integration (Works on Web & Desktop!)
 
-The "Start timer" button you see in Notion is actually a **browser extension**, not a native Notion integration. See [NATIVE_INTEGRATION_GUIDE.md](NATIVE_INTEGRATION_GUIDE.md) for:
-- How Harvest's integration actually works
-- How to build a browser extension (like Harvest)
-- How to build a Notion API integration
-- Comparison of all approaches
+We've built a **native Notion API integration** that uses [Harvest's platform.js](https://github.com/harvesthq/platform/blob/main/button.md) to create timer buttons that work on **both web and desktop**.
+
+### How It Works
+
+1. **Notion API Integration**: Backend service that adds embed blocks to pages
+2. **Harvest Platform.js**: Uses Harvest's official button system (same as their native integrations)
+3. **Embed Blocks**: Work identically on web, desktop, and mobile
+
+### Setup
+
+See [`native-integration/README.md`](native-integration/README.md) for full setup instructions.
+
+**Quick Start:**
+1. Deploy the backend service (Vercel, Railway, etc.)
+2. Create a Notion integration at https://www.notion.com/my-integrations
+3. Use the API to add timer buttons to pages
+4. Buttons work everywhere! ✅
+
+### Files
+
+- `harvest-button.html` - Uses Harvest's platform.js for native buttons
+- `native-integration/` - Backend service for Notion API integration
+
+See [NATIVE_INTEGRATION_GUIDE.md](NATIVE_INTEGRATION_GUIDE.md) for more details on all approaches.
 
 ## Comparison with Trello Power-Up
 

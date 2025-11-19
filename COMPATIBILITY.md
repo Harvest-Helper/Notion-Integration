@@ -2,32 +2,37 @@
 
 ## Quick Answer
 
-**Yes, but with caveats.** The embed-based button will work on both web and desktop, but there are some important limitations to be aware of.
+**✅ Yes!** The native integration using Harvest's platform.js works on **both web and desktop** Notion apps.
 
 ## Compatibility Breakdown
 
 ### ✅ What Works on Both Platforms
 
-1. **Embed Block Itself**
-   - Embed blocks are supported on both web and desktop
-   - Your button HTML will load and display
+1. **Embed Blocks**
+   - Embed blocks are fully supported on both web and desktop
+   - `harvest-button.html` loads and displays correctly
 
-2. **Button Display**
-   - The "Track Time" button will appear on both platforms
-   - Styling and layout work the same
+2. **Harvest Platform.js**
+   - Harvest's official button system works identically on both platforms
+   - JavaScript executes properly in Electron (desktop) environment
 
-3. **Basic JavaScript**
-   - JavaScript functionality works in both environments
+3. **Native Timer Buttons**
+   - Full timer functionality (start, stop, log time)
+   - Project/task selection
+   - Time entry dialog
 
-### ⚠️ Potential Issues on Desktop (Electron)
+### How It Works
 
-1. **Modal Overlays**
-   - Custom modal overlays (like in `button.html`) may have issues in Electron
-   - Fixed positioning and z-index can behave differently
-   - **Solution**: Use `button-simple.html` which opens in a new window instead
+The native integration uses:
+- **Notion API** to add embed blocks to pages
+- **Harvest platform.js** to create interactive timer buttons
+- **Embed blocks** which work identically on web, desktop, and mobile
 
-2. **Iframe Restrictions**
-   - Electron has stricter iframe security policies
+### ⚠️ Notes
+
+1. **Authentication**
+   - Harvest handles authentication in their widget
+   - OAuth flows work normally on both platforms
    - Cross-origin iframes might be blocked
    - Harvest widget iframe should work, but authentication flows might be affected
 
